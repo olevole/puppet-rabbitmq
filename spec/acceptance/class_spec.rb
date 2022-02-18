@@ -4,13 +4,7 @@ require 'spec_helper_acceptance'
 
 describe 'rabbitmq class:' do
   case fact('os.family')
-  when 'RedHat'
-    package_name = 'rabbitmq-server'
-    service_name = 'rabbitmq-server'
-  when 'SUSE'
-    package_name = 'rabbitmq-server'
-    service_name = 'rabbitmq-server'
-  when 'Debian'
+  when 'RedHat', 'SUSE', 'Debian'
     package_name = 'rabbitmq-server'
     service_name = 'rabbitmq-server'
   when 'Archlinux'
@@ -124,11 +118,9 @@ describe 'rabbitmq class:' do
       it { is_expected.to be_running }
     end
 
-    describe port(5672) do
-      it { is_expected.to be_listening.on('0.0.0.0').with('tcp') }
-    end
+    service_ports = [port(5672), port(15_672)]
 
-    describe port(15_672) do
+    service_ports.each do
       it { is_expected.to be_listening.on('0.0.0.0').with('tcp') }
     end
 
@@ -157,13 +149,12 @@ describe 'rabbitmq class:' do
       it { is_expected.to be_running }
     end
 
-    describe port(5672) do
+    service_ports = [port(5672), port(15_672)]
+
+    service_ports.each do
       it { is_expected.to be_listening.on('127.0.0.1').with('tcp') }
     end
 
-    describe port(15_672) do
-      it { is_expected.to be_listening.on('127.0.0.1').with('tcp') }
-    end
     # This listens on all interfaces regardless of these settings
 
     describe port(25_672) do
@@ -195,11 +186,9 @@ describe 'rabbitmq class:' do
       it { is_expected.to be_running }
     end
 
-    describe port(5671) do
-      it { is_expected.to be_listening.on('0.0.0.0').with('tcp') }
-    end
+    service_ports = [port(5671), port(15_671)]
 
-    describe port(15_671) do
+    service_ports.each do
       it { is_expected.to be_listening.on('0.0.0.0').with('tcp') }
     end
   end
@@ -223,12 +212,10 @@ describe 'rabbitmq class:' do
       it { is_expected.to be_running }
     end
 
-    describe port(5672) do
-      it { is_expected.to be_listening.on('0.0.0.0').with('tcp') }
-    end
+    service_ports = [port(5672), port(15_672)]
 
-    describe port(15_672) do
-      it { is_expected.to be_listening.on('127.0.0.1').with('tcp') }
+    service_ports.each do
+      it { is_expected.to be_listening.on('0.0.0.0').with('tcp') }
     end
 
     describe port(25_672) do

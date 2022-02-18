@@ -41,9 +41,11 @@ Puppet::Type.newtype(:rabbitmq_user) do
 
   newproperty(:password) do
     desc 'User password to be set *on creation* and validated each run'
+    # rubocop:disable Naming/MethodParameterName
     def insync?(_is)
       provider.check_password(should)
     end
+    # rubocop:enable Naming/MethodParameterName
 
     def change_to_s(_current, _desired)
       'password has been changed'
@@ -79,9 +81,11 @@ Puppet::Type.newtype(:rabbitmq_user) do
     end
     defaultto []
 
+    # rubocop:disable Naming/MethodParameterName
     def insync?(is)
       is.sort == should.sort
     end
+    # rubocop:enable Naming/MethodParameterName
 
     def should_to_s(value)
       Array(value)
